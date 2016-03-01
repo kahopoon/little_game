@@ -2,8 +2,13 @@ def start_dimension()
   status = []
   dimension = 0
   loop do
-    puts("Please enter width / height (1 to 20)")
-    dimension = gets().to_i
+    puts("Please enter width / height (1 to 20), enter 'q' to quit")
+    input = gets()
+    if input == "q\n"
+      return []
+    else
+      dimension = input.to_i
+    end
     break if (dimension >= 1 && dimension <= 20)
   end
   for i in 0..dimension-1
@@ -174,26 +179,34 @@ def end_of_game(status)
   return true
 end
 
-status = start_dimension()
-win_side = ""
-while (!end_of_game(status))
+def game_sequence(status)
+  win_side = ""
+  while (!end_of_game(status))
+    refresh_screen()
+    show_grid(status)
+    if !end_of_game(status)
+      human_action(status)
+      if is_win("Circle",status)
+        win_side = "You Win!"
+        break
+      end
+    end
+    if !end_of_game(status)
+      computer_AI(status)
+      if is_win("Cross",status)
+        win_side = "Computer Win!"
+        break
+      end
+    end
+  end
+  return win_side
+end
+
+while (true)
+  status = start_dimension()
+  print status.size
+  status.size == 0 ? break : win_side = game_sequence(status)
   refresh_screen()
   show_grid(status)
-  if !end_of_game(status)
-    human_action(status)
-    if is_win("Circle",status)
-      win_side = "You Win!"
-      break
-    end
-  end
-  if !end_of_game(status)
-    computer_AI(status)
-    if is_win("Cross",status)
-      win_side = "Computer Win!"
-      break
-    end
-  end
+  win_side.size == 0? puts("Round Draw!") : puts(win_side)
 end
-refresh_screen
-show_grid(status)
-win_side.size == 0? puts("Round Draw!") : puts(win_side)
