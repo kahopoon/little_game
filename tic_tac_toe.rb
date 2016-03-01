@@ -204,7 +204,6 @@ end
 
 while (true)
   status = start_dimension()
-  print status.size
   status.size == 0 ? break : win_side = game_sequence(status)
   refresh_screen()
   show_grid(status)
