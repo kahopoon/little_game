@@ -26,6 +26,7 @@ def refresh_screen()
     refresh += "\n"
   end
   puts(refresh)
+  return true
 end
 
 def show_grid(status)
@@ -48,6 +49,7 @@ def show_grid(status)
     show += "|"
     puts(show,horizontal_line)
   end
+  return true
 end
 
 def number_to_gridPosition(status, num)
