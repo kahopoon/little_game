@@ -232,7 +232,7 @@ def game_sequence(status)
       end
     end
   end
-  return win_side
+  return win_side.size == 0 ? "Round Draw!" : win_side
 end
 
 while (true)
@@ -240,5 +240,5 @@ while (true)
   status.size == 0 ? break : win_side = game_sequence(status)
   refresh_screen()
   show_grid(status)
-  win_side.size == 0? puts("Round Draw!") : puts(win_side)
+  puts(win_side)
 end
