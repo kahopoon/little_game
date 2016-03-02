@@ -78,7 +78,6 @@ end
 def computer_startround(status)
   if status.size % 2 != 0
     computer_turn = number_to_gridPosition(status, (status.size*status.size + 1) / 2)
-    print computer_turn
     if is_available(status, computer_turn)
       status[computer_turn["row"]][computer_turn["column"]] = "X"
       return true
@@ -87,7 +86,7 @@ def computer_startround(status)
   corner = [1,status.size,status.size*2+1,status.size*status.size]
   computer_turn = rand(4)
   while !is_available(status, number_to_gridPosition(status, corner[computer_turn])) && corner.size > 0
-    corn.delete_at(computer_turn)
+    corner.delete_at(computer_turn)
     computer_turn = rand(4)
   end
   computer_turn = number_to_gridPosition(status, corner[computer_turn])
@@ -110,8 +109,10 @@ def computer_random(status)
   return false
 end
 
-def computer_AI(status)
-  if !computer_startround(status)
+def computer_AI(status, ai_started)
+  if !ai_started
+    computer_startround(status)
+  else
     side = "X"
     opp = "O"
     opp_count_limit = 2
@@ -169,7 +170,7 @@ def computer_AI(status)
       status[rightcross_available_list[random_from_all_available]][status.size-1 - rightcross_available_list[random_from_all_available]] = side
       return true
     end
-    return computer_random(status)
+    computer_random(status)
   end
   return true
 end
@@ -211,6 +212,7 @@ def end_of_game(status)
 end
 
 def game_sequence(status)
+  ai_started = false
   win_side = ""
   while (!end_of_game(status))
     refresh_screen()
@@ -223,7 +225,7 @@ def game_sequence(status)
       end
     end
     if !end_of_game(status)
-      computer_AI(status)
+      ai_started = computer_AI(status, ai_started)
       if is_win("Cross",status)
         win_side = "Computer Win!"
         break
